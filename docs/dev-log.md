@@ -10,3 +10,7 @@
 - Added TransactionList component
 - Added add-transaction form
 - Dashboard calculates income, expenses and savings
+- Lifted transaction state to App.jsx
+- Connected Dashboard and TransactionList through props
+- Added Git repository
+- Pushed project to GitHub
