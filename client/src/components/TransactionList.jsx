@@ -1,20 +1,29 @@
 import { useState } from "react";
+import { createTransaction } from "../services/api";
 
 function TransactionList({ transactions, setTransactions }) {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
 
-  const addTransaction = () => {
-    const newTransaction = {
-      id: Date.now(),
-      description,
-      amount: Number(amount),
-    };
+  const addTransaction = async () => {
+    // Basic guard: don't submit empty fields
+    if (!description || amount === "") return;
 
-    setTransactions([...transactions, newTransaction]);
+    try {
+      // Save to the database via the API, get back the real transaction
+      const saved = await createTransaction({
+        description,
+        amount: Number(amount),
+      });
 
-    setDescription("");
-    setAmount("");
+      // Add the saved transaction (with its real DB id) to the list
+      setTransactions([...transactions, saved]);
+
+      setDescription("");
+      setAmount("");
+    } catch (error) {
+      console.error("Error adding transaction:", error);
+    }
   };
 
   return (

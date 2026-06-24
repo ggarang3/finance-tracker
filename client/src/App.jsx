@@ -1,25 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Dashboard from "./components/Dashboard";
 import TransactionList from "./components/TransactionList";
+import { getTransactions } from "./services/api";
 
 function App() {
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      description: "Salary",
-      amount: 1500,
-    },
-    {
-      id: 2,
-      description: "Rent",
-      amount: -375,
-    },
-    {
-      id: 3,
-      description: "Gym",
-      amount: -21,
-    },
-  ]);
+  const [transactions, setTransactions] = useState([]);
+
+  // Fetch transactions from the API when the app loads
+  useEffect(() => {
+    const loadTransactions = async () => {
+      try {
+        const data = await getTransactions();
+        setTransactions(data);
+      } catch (error) {
+        console.error("Error loading transactions:", error);
+      }
+    };
+
+    loadTransactions();
+  }, []);
 
   return (
     <div>

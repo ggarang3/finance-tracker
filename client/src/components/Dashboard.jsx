@@ -1,11 +1,11 @@
 function Dashboard({ transactions }) {
   const income = transactions
-    .filter((transaction) => transaction.amount > 0)
-    .reduce((total, transaction) => total + transaction.amount, 0);
+    .filter((transaction) => Number(transaction.amount) > 0)
+    .reduce((total, transaction) => total + Number(transaction.amount), 0);
 
   const expenses = transactions
-    .filter((transaction) => transaction.amount < 0)
-    .reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
+    .filter((transaction) => Number(transaction.amount) < 0)
+    .reduce((total, transaction) => total + Math.abs(Number(transaction.amount)), 0);
 
   const savings = income - expenses;
 
