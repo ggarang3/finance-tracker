@@ -1,6 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const transactionRoutes = require('./routes/transactionRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = 5001;
@@ -14,8 +16,9 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'Server is running' });
 });
 
-// Transaction routes
+// Routes
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/auth', authRoutes);
 
 // Start server
 app.listen(PORT, () => {
