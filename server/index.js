@@ -51,7 +51,55 @@ app.post('/api/transactions', async (req, res) => {
     res.status(500).json({ error: 'Failed to create transaction' });
   }
 });
+// PUT (update) a transaction
+app.put('/api/transactions/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description, amount } = req.body;
 
+    // Basic validation
+    if (!description || amount === undefined) {
+      return res.status(400).json({ error: 'Description and amount are required' });
+    }
+
+    const [result] = await db.query(
+      'UPDATE transactions SET description = ?, amount = ? WHERE id = ?',
+      [description, amount, id]
+    );
+
+    // Check if the transaction existed
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    res.json({ id: Number(id), description, amount });
+  } catch (error) {
+    console.error('Error updating transaction:', error);
+    res.status(500).json({ error: 'Failed to update transaction' });
+  }
+});
+
+// DELETE a transaction
+app.delete('/api/transactions/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const [result] = await db.query(
+      'DELETE FROM transactions WHERE id = ?',
+      [id]
+    );
+
+    // Check if the transaction existed
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    res.json({ message: 'Transaction deleted', id: Number(id) });
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    res.status(500).json({ error: 'Failed to delete transaction' });
+  }
+});
 
 
 // Start server
