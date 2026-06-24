@@ -1,9 +1,12 @@
 const db = require('../database/db');
 
-// GET all transactions
+// GET all transactions for the logged-in user
 const getTransactions = async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM transactions ORDER BY created_at DESC');
+    const [rows] = await db.query(
+      'SELECT * FROM transactions WHERE user_id = ? ORDER BY created_at DESC',
+      [req.userId]
+    );
     res.json(rows);
   } catch (error) {
     console.error('Error fetching transactions:', error);
@@ -11,7 +14,7 @@ const getTransactions = async (req, res) => {
   }
 };
 
-// POST a new transaction
+// POST a new transaction for the logged-in user
 const createTransaction = async (req, res) => {
   try {
     const { description, amount } = req.body;
@@ -21,12 +24,13 @@ const createTransaction = async (req, res) => {
     }
 
     const [result] = await db.query(
-      'INSERT INTO transactions (description, amount) VALUES (?, ?)',
-      [description, amount]
+      'INSERT INTO transactions (user_id, description, amount) VALUES (?, ?, ?)',
+      [req.userId, description, amount]
     );
 
     res.status(201).json({
       id: result.insertId,
+      user_id: req.userId,
       description,
       amount,
     });
@@ -36,7 +40,7 @@ const createTransaction = async (req, res) => {
   }
 };
 
-// PUT (update) a transaction
+// PUT (update) a transaction — only if it belongs to the user
 const updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
@@ -47,8 +51,8 @@ const updateTransaction = async (req, res) => {
     }
 
     const [result] = await db.query(
-      'UPDATE transactions SET description = ?, amount = ? WHERE id = ?',
-      [description, amount, id]
+      'UPDATE transactions SET description = ?, amount = ? WHERE id = ? AND user_id = ?',
+      [description, amount, id, req.userId]
     );
 
     if (result.affectedRows === 0) {
@@ -62,14 +66,14 @@ const updateTransaction = async (req, res) => {
   }
 };
 
-// DELETE a transaction
+// DELETE a transaction — only if it belongs to the user
 const deleteTransaction = async (req, res) => {
   try {
     const { id } = req.params;
 
     const [result] = await db.query(
-      'DELETE FROM transactions WHERE id = ?',
-      [id]
+      'DELETE FROM transactions WHERE id = ? AND user_id = ?',
+      [id, req.userId]
     );
 
     if (result.affectedRows === 0) {

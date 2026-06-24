@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
 
 const {
   getTransactions,
@@ -8,7 +9,9 @@ const {
   deleteTransaction,
 } = require('../controllers/transactionController');
 
-// Map each route to its controller function
+// Apply auth middleware to ALL transaction routes
+router.use(authMiddleware);
+
 router.get('/', getTransactions);
 router.post('/', createTransaction);
 router.put('/:id', updateTransaction);
