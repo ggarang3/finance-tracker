@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createTransaction } from "../services/api";
+import { createTransaction, deleteTransaction } from "../services/api";
 
 function TransactionList({ transactions, setTransactions }) {
   const [description, setDescription] = useState("");
@@ -10,19 +10,28 @@ function TransactionList({ transactions, setTransactions }) {
     if (!description || amount === "") return;
 
     try {
-      // Save to the database via the API, get back the real transaction
       const saved = await createTransaction({
         description,
         amount: Number(amount),
       });
 
-      // Add the saved transaction (with its real DB id) to the list
       setTransactions([...transactions, saved]);
 
       setDescription("");
       setAmount("");
     } catch (error) {
       console.error("Error adding transaction:", error);
+    }
+  };
+
+  const removeTransaction = async (id) => {
+    try {
+      await deleteTransaction(id);
+
+      // Remove it from the UI by filtering it out
+      setTransactions(transactions.filter((transaction) => transaction.id !== id));
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
     }
   };
 
@@ -58,6 +67,9 @@ function TransactionList({ transactions, setTransactions }) {
         {transactions.map((transaction) => (
           <li key={transaction.id}>
             {transaction.description} ${transaction.amount}
+            <button onClick={() => removeTransaction(transaction.id)}>
+              Delete
+            </button>
           </li>
         ))}
       </ul>
