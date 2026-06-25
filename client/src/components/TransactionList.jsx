@@ -6,7 +6,6 @@ function TransactionList({ transactions, setTransactions }) {
   const [amount, setAmount] = useState("");
 
   const addTransaction = async () => {
-    // Basic guard: don't submit empty fields
     if (!description || amount === "") return;
 
     try {
@@ -27,8 +26,6 @@ function TransactionList({ transactions, setTransactions }) {
   const removeTransaction = async (id) => {
     try {
       await deleteTransaction(id);
-
-      // Remove it from the UI by filtering it out
       setTransactions(transactions.filter((transaction) => transaction.id !== id));
     } catch (error) {
       console.error("Error deleting transaction:", error);
@@ -36,43 +33,61 @@ function TransactionList({ transactions, setTransactions }) {
   };
 
   return (
-    <div>
-      <h2>Transactions</h2>
+    <div className="transactions">
+      <h2 className="transactions-header">Transactions</h2>
 
-      <input
-        type="text"
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
+      <div className="transaction-form">
+        <input
+          className="input-description"
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <input
+          className="input-amount"
+          type="number"
+          placeholder="Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+        <button className="add-btn" onClick={addTransaction}>
+          Add
+        </button>
+      </div>
 
-      <br />
-      <br />
+      {transactions.length === 0 ? (
+        <p className="transactions-empty">No transactions yet. Add your first one above.</p>
+      ) : (
+        <ul className="transaction-items">
+          {transactions.map((transaction) => {
+            const amountValue = Number(transaction.amount);
+            const isPositive = amountValue >= 0;
 
-      <input
-        type="number"
-        placeholder="Amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
+            return (
+              <li key={transaction.id} className="transaction-item">
+                <div className="transaction-info">
+                  <span className="transaction-description">
+                    {transaction.description}
+                  </span>
+                </div>
 
-      <br />
-      <br />
-
-      <button onClick={addTransaction}>
-        Add Transaction
-      </button>
-
-      <ul>
-        {transactions.map((transaction) => (
-          <li key={transaction.id}>
-            {transaction.description} ${transaction.amount}
-            <button onClick={() => removeTransaction(transaction.id)}>
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+                <div className="transaction-right">
+                  <span className={`transaction-amount ${isPositive ? "positive" : "negative"}`}>
+                    {isPositive ? "+" : "-"}${Math.abs(amountValue).toFixed(2)}
+                  </span>
+                  <button
+                    className="delete-btn"
+                    onClick={() => removeTransaction(transaction.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 }

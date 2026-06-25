@@ -9,13 +9,28 @@ function Dashboard({ transactions }) {
 
   const savings = income - expenses;
 
-  return (
-    <div>
-      <h2>Dashboard</h2>
+  // Savings rate: what % of income you keep
+  const savingsRate = income > 0 ? Math.round((savings / income) * 100) : 0;
 
-      <h3>Income: ${income.toFixed(2)}</h3>
-      <h3>Expenses: ${expenses.toFixed(2)}</h3>
-      <h3>Savings: ${savings.toFixed(2)}</h3>
+  return (
+    <div className="dashboard">
+      <div className="stat-card stat-income">
+        <span className="stat-label">Income</span>
+        <span className="stat-value">${income.toFixed(2)}</span>
+      </div>
+
+      <div className="stat-card stat-expenses">
+        <span className="stat-label">Expenses</span>
+        <span className="stat-value">${expenses.toFixed(2)}</span>
+      </div>
+
+      <div className="stat-card stat-savings">
+        <span className="stat-label">Savings</span>
+        <span className="stat-value">${savings.toFixed(2)}</span>
+        <span className="stat-meta">
+          {savingsRate}% of income kept
+        </span>
+      </div>
     </div>
   );
 }
