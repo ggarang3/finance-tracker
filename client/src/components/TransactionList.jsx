@@ -35,7 +35,10 @@ function TransactionList({ transactions, setTransactions }) {
 
   return (
     <div className="transactions">
-      <h2 className="transactions-header">Transactions</h2>
+      <h2 className="transactions-header">
+  Transactions
+  <span className="transactions-count">{transactions.length}</span>
+</h2>
 
       <div className="transaction-form">
         <input
