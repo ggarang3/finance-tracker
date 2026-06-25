@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createTransaction, deleteTransaction } from "../services/api";
+import { formatCurrency } from "../utils/format";
 
 function TransactionList({ transactions, setTransactions }) {
   const [description, setDescription] = useState("");
@@ -74,8 +75,8 @@ function TransactionList({ transactions, setTransactions }) {
 
                 <div className="transaction-right">
                   <span className={`transaction-amount ${isPositive ? "positive" : "negative"}`}>
-                    {isPositive ? "+" : "-"}${Math.abs(amountValue).toFixed(2)}
-                  </span>
+  {isPositive ? "+" : "−"}{formatCurrency(Math.abs(amountValue))}
+</span>
                   <button
                     className="delete-btn"
                     onClick={() => removeTransaction(transaction.id)}

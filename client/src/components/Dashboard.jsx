@@ -1,3 +1,6 @@
+import { TrendingUp, TrendingDown, Wallet } from "lucide-react";
+import { formatCurrency } from "../utils/format";
+
 function Dashboard({ transactions }) {
   const income = transactions
     .filter((transaction) => Number(transaction.amount) > 0)
@@ -8,28 +11,41 @@ function Dashboard({ transactions }) {
     .reduce((total, transaction) => total + Math.abs(Number(transaction.amount)), 0);
 
   const savings = income - expenses;
-
-  // Savings rate: what % of income you keep
   const savingsRate = income > 0 ? Math.round((savings / income) * 100) : 0;
+  const spentRate = income > 0 ? Math.round((expenses / income) * 100) : 0;
 
   return (
     <div className="dashboard">
       <div className="stat-card stat-income">
-        <span className="stat-label">Income</span>
-        <span className="stat-value">${income.toFixed(2)}</span>
+        <div className="stat-top">
+          <span className="stat-label">Income</span>
+          <div className="stat-icon">
+            <TrendingUp size={18} />
+          </div>
+        </div>
+        <span className="stat-value">{formatCurrency(income)}</span>
       </div>
 
       <div className="stat-card stat-expenses">
-        <span className="stat-label">Expenses</span>
-        <span className="stat-value">${expenses.toFixed(2)}</span>
+        <div className="stat-top">
+          <span className="stat-label">Expenses</span>
+          <div className="stat-icon">
+            <TrendingDown size={18} />
+          </div>
+        </div>
+        <span className="stat-value">{formatCurrency(expenses)}</span>
+        <span className="stat-meta">{spentRate}% of income spent</span>
       </div>
 
       <div className="stat-card stat-savings">
-        <span className="stat-label">Savings</span>
-        <span className="stat-value">${savings.toFixed(2)}</span>
-        <span className="stat-meta">
-          {savingsRate}% of income kept
-        </span>
+        <div className="stat-top">
+          <span className="stat-label">Savings</span>
+          <div className="stat-icon">
+            <Wallet size={18} />
+          </div>
+        </div>
+        <span className="stat-value">{formatCurrency(savings)}</span>
+        <span className="stat-meta">{savingsRate}% of income kept</span>
       </div>
     </div>
   );
