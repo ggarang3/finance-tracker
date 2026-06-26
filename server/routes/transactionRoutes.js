@@ -4,14 +4,15 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const {
   getTransactions,
+  getSummary,
   createTransaction,
   updateTransaction,
   deleteTransaction,
 } = require('../controllers/transactionController');
 
-// Apply auth middleware to ALL transaction routes
 router.use(authMiddleware);
 
+router.get('/summary', getSummary);
 router.get('/', getTransactions);
 router.post('/', createTransaction);
 router.put('/:id', updateTransaction);
