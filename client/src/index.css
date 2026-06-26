@@ -537,3 +537,55 @@ input {
   padding: 4px 12px;
   border-radius: 999px;
 } 
+/* ===== POLISH: empty state ===== */
+
+.transactions-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.empty-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Remove number input spinners */
+.input-amount::-webkit-inner-spin-button,
+.input-amount::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-amount {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.form-error {
+  color: var(--danger);
+  font-size: 13px;
+  margin-bottom: var(--space-md);
+}

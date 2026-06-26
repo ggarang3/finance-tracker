@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const transactionRoutes = require('./routes/transactionRoutes');
 const authRoutes = require('./routes/authRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 const app = express();
 const PORT = 5001;
@@ -19,6 +20,7 @@ app.get('/api/test', (req, res) => {
 // Routes
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/categories', categoryRoutes);
 
 // Start server
 app.listen(PORT, () => {
