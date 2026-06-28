@@ -5,6 +5,7 @@ const transactionRoutes = require('./routes/transactionRoutes');
 const authRoutes = require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const recurringRoutes = require('./routes/recurringRoutes');
+const importRoutes    = require('./routes/importRoutes');
 
 const app = express();
 const PORT = 5001;
@@ -23,6 +24,7 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/recurring', recurringRoutes);
+app.use('/api/import',    importRoutes);
 
 // Start server
 app.listen(PORT, () => {
