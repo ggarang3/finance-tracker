@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { createRecurring, deleteRecurring, getCategories } from "../services/api";
 import { formatCurrency, monthlyEquivalent, FREQ_LABEL, formatDate } from "../utils/format";
-import { RefreshCw } from "lucide-react";
 
 const FREQ_OPTIONS = [
   { value: "weekly",         label: "Weekly" },
@@ -96,7 +95,6 @@ function RecurringList({ recurring, setRecurring }) {
   return (
     <div className="recurring">
       <h2 className="transactions-header">
-        <RefreshCw size={18} />
         Recurring
         <span className="transactions-count">{active.length}</span>
       </h2>
@@ -178,9 +176,6 @@ function RecurringList({ recurring, setRecurring }) {
 
       {active.length === 0 ? (
         <div className="transactions-empty">
-          <div className="empty-icon">
-            <RefreshCw size={28} />
-          </div>
           <p className="empty-title">No recurring items yet</p>
           <p className="empty-subtitle">Add your income and bills above to start planning.</p>
         </div>

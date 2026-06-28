@@ -44,7 +44,10 @@ function ForwardView({ recurring }) {
   return (
     <div className="forward-view">
       <div className="fv-header">
-        <span className="fv-title">Next {WINDOW_DAYS} days</span>
+        <div>
+          <span className="fv-title">Next {WINDOW_DAYS} days</span>
+          <p className="fv-subtitle">Every payment and payday in the next {WINDOW_DAYS} days, and your balance after each.</p>
+        </div>
         <div className="fv-balance-row">
           <label className="fv-balance-label">Current balance</label>
           <div className="fv-balance-wrap">
@@ -71,7 +74,14 @@ function ForwardView({ recurring }) {
       {timeline.length === 0 ? (
         <p className="fv-empty-window">Nothing scheduled in the next {WINDOW_DAYS} days.</p>
       ) : (
-        <ul className="fv-timeline">
+        <>
+          <div className="fv-col-headers">
+            <span>Date</span>
+            <span>Item</span>
+            <span>Amount</span>
+            <span>Balance after</span>
+          </div>
+          <ul className="fv-timeline">
           {timeline.map((row, i) => {
             const isIncome = row.type === 'income';
             const isTight  = row.balanceAfter < 0;
@@ -92,6 +102,7 @@ function ForwardView({ recurring }) {
             );
           })}
         </ul>
+        </>
       )}
     </div>
   );

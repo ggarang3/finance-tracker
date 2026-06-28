@@ -1066,6 +1066,34 @@ input {
   -webkit-appearance: none;
 }
 
+.fv-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.fv-col-headers {
+  display: grid;
+  grid-template-columns: 60px 1fr auto auto;
+  gap: var(--space-md);
+  padding: 0 var(--space-sm) 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+
+.fv-col-headers span {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.fv-col-headers span:nth-child(3),
+.fv-col-headers span:nth-child(4) {
+  text-align: right;
+}
+
 .fv-nudge {
   font-size: 13px;
   color: var(--text-muted);
