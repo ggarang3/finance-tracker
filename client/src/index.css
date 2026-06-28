@@ -694,6 +694,112 @@ input {
   border-color: var(--accent);
 }
 
+/* ===== SAFE TO SPEND ===== */
+
+.sts-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.sts-hero {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+}
+
+.sts-hero-top {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.sts-label {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.sts-period {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.sts-amount {
+  display: block;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.sts-positive { color: var(--accent); }
+.sts-negative { color: var(--danger); }
+
+.sts-supporting {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.sts-income-line  { color: var(--accent); }
+.sts-expense-line { color: var(--danger); }
+.sts-dot          { color: var(--text-muted); }
+
+.sts-empty {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: var(--space-xs);
+}
+
+.sts-buckets {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.sts-bucket {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-md) var(--space-lg);
+  border-top-width: 3px;
+}
+
+.sts-bucket-essential { border-top-color: var(--accent); }
+.sts-bucket-lifestyle  { border-top-color: #ffb84d; }
+.sts-bucket-savings    { border-top-color: var(--text-muted); }
+
+.sts-bucket-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.sts-bucket-amount {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sts-bucket-period {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+
 /* ===== TAB BAR ===== */
 
 .tab-bar {

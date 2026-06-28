@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "./context/AuthContext";
 import AuthPage from "./pages/AuthPage";
-import Dashboard from "./components/Dashboard";
+import SafeToSpend from "./components/SafeToSpend";
 import TransactionList from "./components/TransactionList";
 import RecurringList from "./components/RecurringList";
 import { getTransactions, getRecurring } from "./services/api";
@@ -48,7 +48,7 @@ function App() {
       </header>
 
       <main className="app-main">
-        <Dashboard transactions={transactions} />
+        <SafeToSpend recurring={recurring} />
 
         <div className="tab-bar">
           <button
