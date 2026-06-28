@@ -4,6 +4,7 @@ const cors = require('cors');
 const transactionRoutes = require('./routes/transactionRoutes');
 const authRoutes = require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
+const recurringRoutes = require('./routes/recurringRoutes');
 
 const app = express();
 const PORT = 5001;
@@ -21,6 +22,7 @@ app.get('/api/test', (req, res) => {
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/recurring', recurringRoutes);
 
 // Start server
 app.listen(PORT, () => {
