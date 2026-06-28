@@ -589,3 +589,107 @@ input {
   font-size: 13px;
   margin-bottom: var(--space-md);
 }
+
+/* Category dropdown */
+.input-category {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+
+.input-category:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Category tags on transactions */
+.category-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-top: 4px;
+  width: fit-content;
+}
+
+.tag-essential {
+  background: rgba(0, 208, 156, 0.12);
+  color: var(--accent);
+}
+
+.tag-lifestyle {
+  background: rgba(255, 165, 0, 0.12);
+  color: #ffb84d;
+}
+
+.tag-savings {
+  background: rgba(245, 247, 250, 0.1);
+  color: var(--text-secondary);
+}
+
+/* Expense/Income toggle */
+.type-toggle {
+  display: flex;
+  gap: var(--space-xs);
+  background: var(--bg-elevated);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-md);
+  width: fit-content;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all var(--transition);
+}
+
+.toggle-btn.active.expense {
+  background: rgba(255, 92, 92, 0.15);
+  color: var(--danger);
+}
+
+.toggle-btn.active.income {
+  background: rgba(0, 208, 156, 0.15);
+  color: var(--accent);
+}
+
+/* Second form row */
+.transaction-form-row2 {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.transaction-form-row2 .input-category {
+  flex: 1;
+}
+
+.input-date {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  color-scheme: dark;
+}
+
+.input-date:focus {
+  outline: none;
+  border-color: var(--accent);
+}

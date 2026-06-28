@@ -66,3 +66,22 @@ export const deleteTransaction = async (id) => {
   if (!response.ok) throw new Error('Failed to delete transaction');
   return response.json();
 };
+// ===== CATEGORIES =====
+
+export const getCategories = async () => {
+  const response = await fetch(`${API_URL}/categories`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok) throw new Error("Failed to fetch categories");
+  return response.json();
+};
+
+// ===== SUMMARY =====
+
+export const getSummary = async () => {
+  const response = await fetch(`${API_URL}/transactions/summary`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok) throw new Error("Failed to fetch summary");
+  return response.json();
+};

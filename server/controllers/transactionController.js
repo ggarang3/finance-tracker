@@ -8,6 +8,7 @@ const getTransactions = async (req, res) => {
         t.id, 
         t.description, 
         t.amount, 
+        t.transaction_date,
         t.category_id,
         c.name AS category_name,
         c.type AS category_type,
@@ -15,7 +16,7 @@ const getTransactions = async (req, res) => {
       FROM transactions t
       LEFT JOIN categories c ON t.category_id = c.id
       WHERE t.user_id = ?
-      ORDER BY t.created_at DESC`,
+      ORDER BY t.transaction_date DESC, t.created_at DESC`,
       [req.userId]
     );
     res.json(rows);
@@ -25,37 +26,9 @@ const getTransactions = async (req, res) => {
   }
 };
 
-// POST a new transaction for the logged-in user
-const createTransaction = async (req, res) => {
-  try {
-    const { description, amount, category_id } = req.body;
-
-    if (!description || amount === undefined) {
-      return res.status(400).json({ error: 'Description and amount are required' });
-    }
-
-    const [result] = await db.query(
-      'INSERT INTO transactions (user_id, category_id, description, amount) VALUES (?, ?, ?, ?)',
-      [req.userId, category_id || null, description, amount]
-    );
-
-    res.status(201).json({
-      id: result.insertId,
-      user_id: req.userId,
-      category_id: category_id || null,
-      description,
-      amount,
-    });
-  } catch (error) {
-    console.error('Error creating transaction:', error);
-    res.status(500).json({ error: 'Failed to create transaction' });
-  }
-};
-
 // GET spending summary broken down by category type
 const getSummary = async (req, res) => {
   try {
-    // Total spending (expenses only) grouped by category type
     const [breakdown] = await db.query(
       `SELECT 
         c.type AS category_type,
@@ -67,7 +40,6 @@ const getSummary = async (req, res) => {
       [req.userId]
     );
 
-    // Totals for income, expenses, savings
     const [totals] = await db.query(
       `SELECT
         SUM(CASE WHEN amount > 0 THEN amount ELSE 0 END) AS income,
@@ -77,7 +49,6 @@ const getSummary = async (req, res) => {
       [req.userId]
     );
 
-    // Shape the breakdown into a clean object
     const buckets = { essential: 0, lifestyle: 0, savings: 0 };
     breakdown.forEach((row) => {
       buckets[row.category_type] = Number(row.total);
@@ -99,26 +70,63 @@ const getSummary = async (req, res) => {
   }
 };
 
-// PUT (update) a transaction — only if it belongs to the user
-const updateTransaction = async (req, res) => {
+// POST a new transaction for the logged-in user
+const createTransaction = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { description, amount, category_id } = req.body;
+    const { description, amount, category_id, transaction_date, type } = req.body;
 
     if (!description || amount === undefined) {
       return res.status(400).json({ error: 'Description and amount are required' });
     }
 
+    // Normalise the amount based on type: expenses negative, income positive.
+    const numericAmount = Math.abs(Number(amount));
+    const signedAmount = type === 'income' ? numericAmount : -numericAmount;
+
+    // Default the date to today if not provided
+    const date = transaction_date || new Date().toISOString().split('T')[0];
+
+    const [result] = await db.query(
+      'INSERT INTO transactions (user_id, category_id, description, amount, transaction_date) VALUES (?, ?, ?, ?, ?)',
+      [req.userId, category_id || null, description, signedAmount, date]
+    );
+
+    res.status(201).json({
+      id: result.insertId,
+      user_id: req.userId,
+      category_id: category_id || null,
+      description,
+      amount: signedAmount,
+      transaction_date: date,
+    });
+  } catch (error) {
+    console.error('Error creating transaction:', error);
+    res.status(500).json({ error: 'Failed to create transaction' });
+  }
+};
+
+// PUT (update) a transaction — only if it belongs to the user
+const updateTransaction = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description, amount, category_id, type } = req.body;
+
+    if (!description || amount === undefined) {
+      return res.status(400).json({ error: 'Description and amount are required' });
+    }
+
+    const signedAmount = type === 'income' ? Math.abs(Number(amount)) : -Math.abs(Number(amount));
+
     const [result] = await db.query(
       'UPDATE transactions SET description = ?, amount = ?, category_id = ? WHERE id = ? AND user_id = ?',
-      [description, amount, category_id || null, id, req.userId]
+      [description, signedAmount, category_id || null, id, req.userId]
     );
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Transaction not found' });
     }
 
-    res.json({ id: Number(id), description, amount, category_id: category_id || null });
+    res.json({ id: Number(id), description, amount: signedAmount, category_id: category_id || null });
   } catch (error) {
     console.error('Error updating transaction:', error);
     res.status(500).json({ error: 'Failed to update transaction' });

@@ -1,19 +1,35 @@
-import { useState } from "react";
-import { createTransaction, deleteTransaction } from "../services/api";
+import { useState, useEffect } from "react";
+import { createTransaction, deleteTransaction, getCategories } from "../services/api";
 import { formatCurrency } from "../utils/format";
 import { Receipt } from "lucide-react";
 
 function TransactionList({ transactions, setTransactions }) {
+  const [type, setType] = useState("expense");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [date, setDate] = useState(() => new Date().toISOString().split("T")[0]);
+  const [categories, setCategories] = useState([]);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (err) {
+        console.error("Error loading categories:", err);
+      }
+    };
+    loadCategories();
+  }, []);
 
   const addTransaction = async () => {
     if (!description.trim()) {
       setError("Please enter a description");
       return;
     }
-    if (amount === "" || isNaN(Number(amount))) {
+    if (amount === "" || isNaN(Number(amount)) || Number(amount) <= 0) {
       setError("Please enter a valid amount");
       return;
     }
@@ -24,11 +40,23 @@ function TransactionList({ transactions, setTransactions }) {
       const saved = await createTransaction({
         description: description.trim(),
         amount: Number(amount),
+        type,
+        category_id: categoryId ? Number(categoryId) : null,
+        transaction_date: date,
       });
 
-      setTransactions([...transactions, saved]);
+      const category = categories.find((c) => c.id === Number(categoryId));
+      const enriched = {
+        ...saved,
+        category_name: category ? category.name : null,
+        category_type: category ? category.type : null,
+      };
+
+      setTransactions([enriched, ...transactions]);
       setDescription("");
       setAmount("");
+      setCategoryId("");
+      setDate(new Date().toISOString().split("T")[0]);
     } catch (error) {
       console.error("Error adding transaction:", error);
       setError("Failed to add transaction");
@@ -42,10 +70,16 @@ function TransactionList({ transactions, setTransactions }) {
   const removeTransaction = async (id) => {
     try {
       await deleteTransaction(id);
-      setTransactions(transactions.filter((transaction) => transaction.id !== id));
+      setTransactions(transactions.filter((t) => t.id !== id));
     } catch (error) {
       console.error("Error deleting transaction:", error);
     }
+  };
+
+  const grouped = {
+    essential: categories.filter((c) => c.type === "essential"),
+    lifestyle: categories.filter((c) => c.type === "lifestyle"),
+    savings: categories.filter((c) => c.type === "savings"),
   };
 
   return (
@@ -54,6 +88,22 @@ function TransactionList({ transactions, setTransactions }) {
         Transactions
         <span className="transactions-count">{transactions.length}</span>
       </h2>
+
+      {/* Expense / Income toggle */}
+      <div className="type-toggle">
+        <button
+          className={`toggle-btn ${type === "expense" ? "active expense" : ""}`}
+          onClick={() => setType("expense")}
+        >
+          Expense
+        </button>
+        <button
+          className={`toggle-btn ${type === "income" ? "active income" : ""}`}
+          onClick={() => setType("income")}
+        >
+          Income
+        </button>
+      </div>
 
       <div className="transaction-form">
         <input
@@ -75,6 +125,37 @@ function TransactionList({ transactions, setTransactions }) {
         <button className="add-btn" onClick={addTransaction}>
           Add
         </button>
+      </div>
+
+      <div className="transaction-form-row2">
+        <select
+          className="input-category"
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option value="">Category</option>
+          <optgroup label="Essential">
+            {grouped.essential.map((c) => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
+          </optgroup>
+          <optgroup label="Lifestyle">
+            {grouped.lifestyle.map((c) => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
+          </optgroup>
+          <optgroup label="Savings">
+            {grouped.savings.map((c) => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
+          </optgroup>
+        </select>
+        <input
+          className="input-date"
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
       </div>
 
       {error && <p className="form-error">{error}</p>}
@@ -99,6 +180,11 @@ function TransactionList({ transactions, setTransactions }) {
                   <span className="transaction-description">
                     {transaction.description}
                   </span>
+                  {transaction.category_name && (
+                    <span className={`category-tag tag-${transaction.category_type}`}>
+                      {transaction.category_name}
+                    </span>
+                  )}
                 </div>
 
                 <div className="transaction-right">
