@@ -1,5 +1,10 @@
 const db = require('../database/db');
 
+const VALID_FREQUENCIES = new Set([
+  'weekly', 'fortnightly', 'every_4_weeks', 'monthly',
+  'every_2_months', 'quarterly', 'every_4_months', 'twice_yearly', 'yearly',
+]);
+
 const getRecurring = async (req, res) => {
   try {
     const [rows] = await db.query(
@@ -34,6 +39,9 @@ const createRecurring = async (req, res) => {
 
     if (!type || !name || amount === undefined || !frequency || !next_due_date) {
       return res.status(400).json({ error: 'type, name, amount, frequency, and next_due_date are required' });
+    }
+    if (!VALID_FREQUENCIES.has(frequency)) {
+      return res.status(400).json({ error: `Invalid frequency. Must be one of: ${[...VALID_FREQUENCIES].join(', ')}` });
     }
 
     // Amount is stored as positive magnitude — type carries direction

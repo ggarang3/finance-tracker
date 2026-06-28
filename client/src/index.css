@@ -693,3 +693,104 @@ input {
   outline: none;
   border-color: var(--accent);
 }
+
+/* ===== TAB BAR ===== */
+
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-lg);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.tab-btn.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+
+.tab-btn:hover:not(.active) {
+  color: var(--text-primary);
+}
+
+/* ===== RECURRING LIST ===== */
+
+.recurring {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+}
+
+/* Type pill — income / expense label on each recurring item */
+.type-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.pill-expense {
+  background: rgba(255, 92, 92, 0.12);
+  color: var(--danger);
+}
+
+.pill-income {
+  background: rgba(0, 208, 156, 0.12);
+  color: var(--accent);
+}
+
+/* Name + pill row inside transaction-info */
+.recurring-name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+/* Amounts block — stacked: native cadence on top, monthly equiv below */
+.recurring-amounts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.recurring-native {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.amount-income { color: var(--accent); }
+.amount-expense { color: var(--danger); }
+
+.recurring-freq {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.recurring-monthly {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.recurring-due {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}

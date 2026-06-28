@@ -85,3 +85,32 @@ export const getSummary = async () => {
   if (!response.ok) throw new Error("Failed to fetch summary");
   return response.json();
 };
+
+// ===== RECURRING =====
+
+export const getRecurring = async () => {
+  const response = await fetch(`${API_URL}/recurring`, {
+    headers: getHeaders(),
+  });
+  if (!response.ok) throw new Error("Failed to fetch recurring items");
+  return response.json();
+};
+
+export const createRecurring = async (item) => {
+  const response = await fetch(`${API_URL}/recurring`, {
+    method: "POST",
+    headers: getHeaders(),
+    body: JSON.stringify(item),
+  });
+  if (!response.ok) throw new Error("Failed to create recurring item");
+  return response.json();
+};
+
+export const deleteRecurring = async (id) => {
+  const response = await fetch(`${API_URL}/recurring/${id}`, {
+    method: "DELETE",
+    headers: getHeaders(),
+  });
+  if (!response.ok) throw new Error("Failed to delete recurring item");
+  return response.json();
+};
