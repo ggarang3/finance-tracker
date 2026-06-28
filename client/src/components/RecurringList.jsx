@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createRecurring, deleteRecurring, getCategories } from "../services/api";
-import { formatCurrency, monthlyEquivalent } from "../utils/format";
+import { formatCurrency, monthlyEquivalent, FREQ_LABEL, formatDate } from "../utils/format";
 import { RefreshCw } from "lucide-react";
 
 const FREQ_OPTIONS = [
@@ -14,28 +14,6 @@ const FREQ_OPTIONS = [
   { value: "twice_yearly",   label: "Twice a year" },
   { value: "yearly",         label: "Yearly" },
 ];
-
-const FREQ_LABEL = {
-  weekly:         "week",
-  fortnightly:    "fortnight",
-  every_4_weeks:  "4 weeks",
-  monthly:        "month",
-  every_2_months: "2 months",
-  quarterly:      "quarter",
-  every_4_months: "4 months",
-  twice_yearly:   "6 months",
-  yearly:         "year",
-};
-
-// Parse "YYYY-MM-DD" using local constructor to avoid UTC midnight shift
-const formatDate = (dateStr) => {
-  const [year, month, day] = dateStr.split("-").map(Number);
-  return new Date(year, month - 1, day).toLocaleDateString("en-AU", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-};
 
 function RecurringList({ recurring, setRecurring }) {
   const [type, setType] = useState("expense");

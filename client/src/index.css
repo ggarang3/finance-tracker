@@ -900,3 +900,103 @@ input {
   color: var(--text-secondary);
   white-space: nowrap;
 }
+
+/* ===== SET-ASIDES (TRUE EXPENSES) ===== */
+
+.set-asides {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.set-asides-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.set-asides-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.set-asides-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.set-asides-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.set-aside-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sa-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.sa-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sa-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sa-cadence {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.sa-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.sa-monthly {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sa-accrued {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.sa-track {
+  height: 4px;
+  background: var(--bg-elevated);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.sa-bar {
+  height: 100%;
+  background: #ffb84d;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
