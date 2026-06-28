@@ -3,6 +3,7 @@ import { useAuth } from "./context/AuthContext";
 import AuthPage from "./pages/AuthPage";
 import SafeToSpend from "./components/SafeToSpend";
 import TrueExpenses from "./components/TrueExpenses";
+import ForwardView from "./components/ForwardView";
 import TransactionList from "./components/TransactionList";
 import RecurringList from "./components/RecurringList";
 import { getTransactions, getRecurring } from "./services/api";
@@ -65,6 +66,12 @@ function App() {
           >
             Recurring
           </button>
+          <button
+            className={`tab-btn ${activeTab === "upcoming" ? "active" : ""}`}
+            onClick={() => setActiveTab("upcoming")}
+          >
+            Upcoming
+          </button>
         </div>
 
         {activeTab === "transactions" ? (
@@ -72,11 +79,13 @@ function App() {
             transactions={transactions}
             setTransactions={setTransactions}
           />
-        ) : (
+        ) : activeTab === "recurring" ? (
           <RecurringList
             recurring={recurring}
             setRecurring={setRecurring}
           />
+        ) : (
+          <ForwardView recurring={recurring} />
         )}
       </main>
     </div>

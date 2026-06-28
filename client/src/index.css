@@ -1000,3 +1000,141 @@ input {
   border-radius: 999px;
   transition: width 0.4s ease;
 }
+
+/* ===== FORWARD VIEW ===== */
+
+.forward-view {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+}
+
+.fv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+  gap: var(--space-md);
+}
+
+.fv-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.fv-balance-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.fv-balance-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.fv-balance-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  gap: 4px;
+}
+
+.fv-balance-prefix {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.fv-balance-field {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 14px;
+  width: 100px;
+}
+
+.fv-balance-field::-webkit-inner-spin-button,
+.fv-balance-field::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.fv-nudge {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.fv-empty-window {
+  text-align: center;
+  color: var(--text-muted);
+  padding: var(--space-lg);
+  font-size: 14px;
+}
+
+.fv-timeline {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.fv-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto auto;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  border-left: 3px solid transparent;
+  padding-left: var(--space-sm);
+}
+
+.fv-row:last-child {
+  border-bottom: none;
+}
+
+.fv-row-tight {
+  border-left-color: rgba(255, 184, 77, 0.55);
+}
+
+.fv-date {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.fv-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.fv-amount {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.fv-income  { color: var(--accent); }
+.fv-expense { color: var(--danger); }
+
+.fv-balance-col {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: right;
+  white-space: nowrap;
+  min-width: 88px;
+}
+
+.fv-balance-tight {
+  color: #ffb84d;
+  font-weight: 600;
+}
