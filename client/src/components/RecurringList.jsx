@@ -132,7 +132,7 @@ function RecurringList({ recurring, setRecurring }) {
         </button>
         <button
           className={`toggle-btn ${type === "income" ? "active income" : ""}`}
-          onClick={() => setType("income")}
+          onClick={() => { setType("income"); setCategoryId(""); }}
         >
           Income
         </button>
@@ -176,22 +176,24 @@ function RecurringList({ recurring, setRecurring }) {
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
-        <select
-          className="input-category"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-        >
-          <option value="">Category</option>
-          <optgroup label="Essential">
-            {grouped.essential.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-          </optgroup>
-          <optgroup label="Lifestyle">
-            {grouped.lifestyle.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-          </optgroup>
-          <optgroup label="Savings">
-            {grouped.savings.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-          </optgroup>
-        </select>
+        {type === "expense" && (
+          <select
+            className="input-category"
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+          >
+            <option value="">Category</option>
+            <optgroup label="Essential">
+              {grouped.essential.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </optgroup>
+            <optgroup label="Lifestyle">
+              {grouped.lifestyle.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </optgroup>
+            <optgroup label="Savings">
+              {grouped.savings.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </optgroup>
+          </select>
+        )}
       </div>
 
       {error && <p className="form-error">{error}</p>}
